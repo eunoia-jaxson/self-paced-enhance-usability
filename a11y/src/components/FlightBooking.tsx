@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./FlightBooking.css";
 
 const MAX_PASSENGERS = 3;
+const MIN_PASSENGERS = 1;
 
 const FlightBooking = () => {
   const [adultCount, setAdultCount] = useState(1);
@@ -18,14 +19,32 @@ const FlightBooking = () => {
   return (
     <div className="flight-booking">
       <h2 className="heading-2-text">항공권 예매</h2>
-      <div className="passenger-count">
-        <span className="body-text">성인</span>
+      <div
+        className="passenger-count"
+        role="group"
+        aria-labelledby="adult-label"
+      >
+        <span className="body-text" id="adult-label">
+          성인
+        </span>
         <div className="counter">
-          <button className="button-text" onClick={decrementCount}>
+          <button
+            className="button-text"
+            onClick={decrementCount}
+            aria-label="성인 승객 감소"
+            aria-controls="adult-count"
+            disabled={adultCount <= MIN_PASSENGERS}
+          >
             -
           </button>
           <span>{adultCount}</span>
-          <button className="button-text" onClick={incrementCount}>
+          <button
+            className="button-text"
+            onClick={incrementCount}
+            aria-label="성인 승객 증가"
+            aria-controls="adult-count"
+            disabled={adultCount >= MAX_PASSENGERS}
+          >
             +
           </button>
         </div>
