@@ -7,13 +7,30 @@ const MIN_PASSENGERS = 1;
 
 const FlightBooking = () => {
   const [adultCount, setAdultCount] = useState(1);
+  const [statusMessage, setStatusMessage] = useState("");
 
   const incrementCount = () => {
-    setAdultCount((prev) => Math.min(MAX_PASSENGERS, prev + 1));
+    setAdultCount((prev) => {
+      const next = Math.min(MAX_PASSENGERS, prev + 1);
+      if (next === MAX_PASSENGERS && prev !== MAX_PASSENGERS) {
+        setStatusMessage("최대 승객 수에 도달했습니다.");
+      } else {
+        setStatusMessage("");
+      }
+      return next;
+    });
   };
 
   const decrementCount = () => {
-    setAdultCount((prev) => Math.max(1, prev - 1));
+    setAdultCount((prev) => {
+      const next = Math.max(MIN_PASSENGERS, prev - 1);
+      if (next === MIN_PASSENGERS && prev !== MIN_PASSENGERS) {
+        setStatusMessage("최소 승객 수입니다.");
+      } else {
+        setStatusMessage("");
+      }
+      return next;
+    });
   };
 
   return (
@@ -37,7 +54,14 @@ const FlightBooking = () => {
           >
             -
           </button>
-          <span>{adultCount}</span>
+          <span
+            id="adult-count"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {adultCount}
+          </span>
           <button
             className="button-text"
             onClick={incrementCount}
@@ -48,6 +72,14 @@ const FlightBooking = () => {
             +
           </button>
         </div>
+      </div>
+      <div
+        className="visually-hidden"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {statusMessage}
       </div>
       <button className="search-button">항공편 검색</button>
     </div>
